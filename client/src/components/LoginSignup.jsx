@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import axios from 'axios';
 
 
 const LoginSignup = () => {
+    const [isLoggedIn,setLoggedIn]=useState(false);
+    const [error, setError] = useState('');
     const [formType, setFormType] = useState('login');
     const [loginFormData, setLoginFormData] = useState({
         email: '',
@@ -30,29 +32,59 @@ const LoginSignup = () => {
         e.preventDefault();
         try {
             if (formType === 'login') {
-                const response = await axios.post('/signin', loginFormData);
+                const response = await axios.post('http://localhost:3000/signin', loginFormData);
+                console.log(response.data.token);
                 localStorage.setItem('token', response.data.token);
-                // Redirect or show logged in state
-                
+                setLoggedIn(true);
             } else {
-                await axios.post('/signup', signupFormData);
+                const response = await axios.post('http://localhost:3000/signup', signupFormData);
+                setLoggedIn(true);
                 setFormType('login');
             }
         } catch (error) {
-            console.error('Error:', error.response.data);
+            if (error.response) {
+                setError(error.response.data);
+            } else {
+                setError('An error occurred');
+            }
         }
     };
-
+    
     const handleLogout = () => {
         localStorage.removeItem('token');
+        setLoggedIn(false);
         // Redirect or show logged out state
     };
+    
+    useEffect(() => {
+        async function verifyToken() {
+            const token = localStorage.token; // Replace with your JWT token
+            try {
+                const response = await axios.get('http://localhost:3000/protected', {
+                    headers: {
+                        Authorization: token
+                    }
+                });
+                console.log(response.data);
+                setLoggedIn(true); // Token is valid
+            } catch (error) {
+                console.error(error.response.data); // Invalid token
+            }
+        }
+        if(localStorage.token)
+            {
+              verifyToken();  
+            }
+        
+    }, []);
+
+
 
     return (
         <div className="bg-green-200 min-h-screen flex justify-center items-center">
             <div className="bg-blue-200 p-8 rounded shadow-lg">
                 <h2 className="text-2xl font-bold mb-4 text-center">City Garbage Management System</h2>
-                {localStorage.getItem('token') ? (
+                {isLoggedIn ? (
                     <button onClick={handleLogout} className="bg-red-500 text-white px-4 py-2 rounded focus:outline-none">Logout</button>
                 ) : (
                     <div>
@@ -60,7 +92,7 @@ const LoginSignup = () => {
     <form onSubmit={handleFormSubmit}>
         <div className="mb-4">
             <label htmlFor="email" className="block mb-1">Email</label>
-            <input type="email" id="email" name="email" value={loginFormData.email} onChange={handleLoginFormChange} className="w-full px-3 py-2 border rounded focus:outline-none" required />
+            <input type="text" id="email" name="email" value={loginFormData.email} onChange={handleLoginFormChange} className="w-full px-3 py-2 border rounded focus:outline-none" required />
         </div>
         <div className="mb-4">
             <label htmlFor="password" className="block mb-1">Password</label>
@@ -75,7 +107,7 @@ const LoginSignup = () => {
             </select>
         </div>
         <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded focus:outline-none">Login</button>
-    
+       
     </form>
 )}
 
@@ -83,7 +115,7 @@ const LoginSignup = () => {
     <form onSubmit={handleFormSubmit}>
         <div className="mb-4">
             <label htmlFor="email" className="block mb-1">Email</label>
-            <input type="email" id="email" name="email" value={signupFormData.email} onChange={handleSignupFormChange} className="w-full px-3 py-2 border rounded focus:outline-none" required />
+            <input type="text" id="email" name="email" value={signupFormData.email} onChange={handleSignupFormChange} className="w-full px-3 py-2 border rounded focus:outline-none" required />
         </div>
         <div className="mb-4">
             <label htmlFor="password" className="block mb-1">Password</label>
@@ -107,7 +139,8 @@ const LoginSignup = () => {
 )}
 
                         <button type="button" onClick={() => setFormType(formType === 'login' ? 'signup' : 'login')} className="text-gray-500 hover:text-gray-700 ml-2">Switch to {formType === 'login' ? 'Signup' : 'Login'}</button>
-                    </div>
+                  <div><b className="text-red-500">{error}</b></div>  </div>
+                    
                 )}
             </div>
         </div>
