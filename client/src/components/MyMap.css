@@ -1,0 +1,16 @@
+/* MyMap.css */
+
+.map-container {
+    height: 400px;
+    width: 100%;
+}
+
+.leaflet-container {
+    height: 100%;
+}
+
+.marker-popup {
+    max-width: 200px;
+}
+
+/* Add more styles as needed */

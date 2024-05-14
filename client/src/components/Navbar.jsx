@@ -36,20 +36,22 @@ const Navbar = ({ userType, isAuthenticated }) => {
 
     return (
         <nav className="bg-green-500 p-4">
-            <div className="container mx-auto flex justify-between items-center">
-                <div className="flex items-center">
-                    <img src="/vite.svg" alt="Logo" className="h-8 mr-2" />
-                    <h1 className="text-white text-xl font-bold">Welcome to City Garbage Manager</h1>
-                </div>
-                <ul className="flex space-x-4">
-                    {links.map((link, index) => (
-                        <li key={index}>
-                            <a href={link.path} className="text-white hover:text-gray-200">{link.label}</a>
-                        </li>
-                    ))}
-                </ul>
-            </div>
-        </nav>
+        <div className="container mx-auto flex justify-between items-center">
+            <div className="flex items-center">
+                <img src="/vite.svg" alt="Logo" className="h-8 mr-2" />
+                {isAuthenticated?(<h1 className='text-yellow-200 text-xl font-bold capitalize'>{userType}</h1>):(<h1 className="text-white text-xl font-bold">Welcome to City Garbage Manager</h1>
+       )}
+                     </div>
+            <ul className="flex space-x-4">
+                {links.map((link, index) => (
+                    <li key={index}>
+                        <a href={link.path} className="text-white hover:text-purple-500">{link.label}</a>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    </nav>
+    
     );
 };
 

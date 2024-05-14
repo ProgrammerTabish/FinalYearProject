@@ -1,5 +1,6 @@
-import React, { useState,useEffect } from 'react';
+import { useState,useEffect } from 'react';
 import axios from 'axios';
+
 
 
 const LoginSignup = () => {
@@ -85,7 +86,11 @@ const LoginSignup = () => {
             <div className="bg-blue-200 p-8 rounded shadow-lg">
                 <h2 className="text-2xl font-bold mb-4 text-center">City Garbage Management System</h2>
                 {isLoggedIn ? (
+                 <div>
+
                     <button onClick={handleLogout} className="bg-red-500 text-white px-4 py-2 rounded focus:outline-none">Logout</button>
+                    
+                    </div>
                 ) : (
                     <div>
                       {formType === 'login' && (
@@ -148,3 +153,4 @@ const LoginSignup = () => {
 };
 
 export default LoginSignup;
+

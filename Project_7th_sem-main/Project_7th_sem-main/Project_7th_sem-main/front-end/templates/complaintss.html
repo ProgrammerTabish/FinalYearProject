@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Citizen Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+
+    header {
+      background-color: #333;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+    }
+
+    nav {
+      background-color: #444;
+      color: #fff;
+      padding: 10px;
+      text-align: center;
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 15px;
+    }
+
+    main {
+      padding: 20px;
+    }
+
+    .dashboard-item {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+    }
+
+    .dashboard-item h2 {
+      color: #333;
+    }
+
+    .complaints-list {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .complaint {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      background-color: #f9f9f9;
+    }
+
+    footer {
+      background-color: #333;
+      color: #fff;
+      padding: 10px;
+      text-align: center;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Citizen Dashboard</h1>
+  </header>
+
+  <nav>
+    <a href="#">Complaints</a>
+    <a href="#">Profile</a>
+    <a href="#">History</a>
+  </nav>
+
+  <main>
+    <div class="dashboard-item">
+      <h2>Complaints</h2>
+      <ul class="complaints-list">
+        <li class="complaint">
+          <strong>Issue:</strong> Van is not on time
+          <br>
+          <strong>Status:</strong> In Progress
+        </li>
+        <li class="complaint">
+          <strong>Issue:</strong> Van didnt come today
+          <br>
+          <strong>Status:</strong> Open
+        </li>
+        <!-- Add more complaints as needed -->
+      </ul>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2023 Citizen Dashboard</p>
+  </footer>
+
+</body>
+</html>

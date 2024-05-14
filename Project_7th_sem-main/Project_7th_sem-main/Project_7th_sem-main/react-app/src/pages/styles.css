@@ -1,0 +1,213 @@
+ body {
+     font-family: Arial, sans-serif;
+     margin: 0;
+     padding: 0;
+     background-color: #f4f4f4;
+ }
+
+ header {
+     background-color: #333;
+     color: #fff;
+     padding: 20px;
+     text-align: center;
+ }
+
+ main {
+     display: flex;
+     justify-content: space-around;
+     align-items: center;
+     height: 80vh;
+ }
+
+ .login-section {
+     background-color: #fff;
+     padding: 20px;
+     border-radius: 5px;
+     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+     text-align: center;
+ }
+
+ .login-section h2 {
+     color: #333;
+ }
+
+ .login-form {
+     margin-top: 20px;
+ }
+
+ .login-form label {
+     display: block;
+     margin-bottom: 8px;
+ }
+
+ .login-form input {
+     width: 100%;
+     padding: 8px;
+     margin-bottom: 16px;
+     box-sizing: border-box;
+ }
+
+ .login-form button {
+     background-color: #333;
+     color: #fff;
+     padding: 10px 20px;
+     border: none;
+     border-radius: 3px;
+     cursor: pointer;
+ }
+
+ footer {
+     background-color: #333;
+     color: #fff;
+     padding: 10px;
+     text-align: center;
+ }
+ body {
+     font-family: Arial, sans-serif;
+     margin: 0;
+     padding: 0;
+     background-color: #f4f4f4;
+     color: #333;
+ }
+
+ header {
+     background-color: #333;
+     color: #fff;
+     padding: 20px;
+     text-align: center;
+ }
+
+ nav {
+     background-color: #444;
+     color: #fff;
+     padding: 10px;
+     text-align: center;
+ }
+
+ nav a {
+     color: #fff;
+     text-decoration: none;
+     margin: 0 15px;
+ }
+
+ main {
+     padding: 20px;
+    
+ }
+
+ #tracker-number {
+     font-size: 24px;
+     font-weight: bold;
+     margin-bottom: 20px;
+ }
+
+ .change-password-form {
+    
+     background-color: #fff;
+     padding: 20px;
+     border-radius: 5px;
+     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+     width: 50%;
+     margin: 0 auto;
+ }
+
+ .change-password-form label {
+     display: block;
+     margin-bottom: 8px;
+     text-align: left;
+ }
+
+ .change-password-form input {
+     width: 100%;
+     padding: 8px;
+     margin-bottom: 16px;
+     box-sizing: border-box;
+ }
+
+ .change-password-form button {
+     background-color: #333;
+     color: #fff;
+     padding: 10px 20px;
+     border: none;
+     border-radius: 3px;
+     cursor: pointer;
+ }
+
+ footer {
+     background-color: #333;
+     color: #fff;
+     padding: 10px;
+     text-align: center;
+     position: fixed;
+     bottom: 0;
+     width: 100%;
+ }
+ 
+ label {
+     display: block;
+     margin-bottom: 8px;
+     font-weight: bold;
+ }
+ input,
+ textarea {
+     width: 100%;
+     padding: 8px;
+     margin-bottom: 16px;
+     box-sizing: border-box;
+     border: 1px solid #ccc;
+     border-radius: 4px;
+ }
+ button {
+     background-color: #4caf50;
+     color: #fff;
+     padding: 10px 15px;
+     border: none;
+     border-radius: 4px;
+     cursor: pointer;
+     margin-top: 12px;
+ }
+ button:hover {
+     background-color: #45a049;
+ }
+ .complainButton{
+    padding:12px;
+    margin:12px;
+ }
+
+  
+
+   .dashboard-item {
+       background-color: #fff;
+       padding: 20px;
+       border-radius: 5px;
+       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+       margin-bottom: 20px;
+   }
+
+   .dashboard-item h2 {
+       color: #333;
+   }
+
+   .complaints-list {
+       list-style-type: none;
+       padding: 0;
+   }
+
+   .complaint {
+       border: 1px solid #ccc;
+       padding: 10px;
+       margin-bottom: 10px;
+       border-radius: 5px;
+       background-color: #f9f9f9;
+   }
+   .btnSubmit{
+    margin:12px;
+   }
+   .forms{
+    margin:12px;
+   
+   }
+   .warning{
+    font-weight: 600;
+    color:red;
+   }

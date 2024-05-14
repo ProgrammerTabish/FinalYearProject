@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Van Tracking</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #333;
+      color: #fff;
+      padding: 10px;
+      text-align: center;
+    }
+    
+    nav {
+      background-color: #444;
+      color: #fff;
+      padding: 10px;
+      text-align: center;
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 15px;
+    }
+
+    main {
+      padding: 20px;
+    }
+
+    #map {
+      height: 400px;
+      width: 100%;
+      border: 1px solid #ccc;
+      margin-bottom: 20px;
+    }
+
+    .tracking-info {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .tracking-info h2 {
+      color: #333;
+    }
+
+    footer {
+      background-color: #333;
+      color: #fff;
+      padding: 10px;
+      text-align: center;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Staff Dashboard</h1>
+  </header>
+  <nav>
+    <a href="#">Profile</a>
+    <a href="#">Locate</a>
+    <a href="#">Points</a>
+  </nav>
+
+  <main>
+    <div id="map"></div>
+
+    <div class="tracking-info">
+      <h2>Current Location</h2>
+      <p>Latitude: 40.7128</p>
+      <p>Longitude: -74.0060</p>
+      <p>Last Update: 2023-11-14 12:30 PM</p>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2023 Van Tracking</p>
+  </footer>
+
+  <!-- Include a map library, for example, Google Maps API -->
+  <!-- Note: You need to replace 'YOUR_API_KEY' with an actual API key -->
+  <script src="<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15011.210284820903!2d75.29625929408573!3d19.84830488746602!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bdb98f7267f2813%3A0x897674c20f9ba2be!2sSatara%20Parisar%2C%20Aurangabad%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1699941439162!5m2!1sen!2sin" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>></script>
+
+  <script>
+    function initMap() {
+      // Set the default location to a specific latitude and longitude
+      var defaultLocation = { lat: 40.7128, lng: -74.0060 };
+
+      // Create a map centered at the default location
+      var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 12,
+        center: defaultLocation
+      });
+
+      // Add a marker at the default location
+      var marker = new google.maps.Marker({
+        position: defaultLocation,
+        map: map,
+        title: 'Van Location'
+      });
+    }
+  </script>
+
+</body>
+</html>
