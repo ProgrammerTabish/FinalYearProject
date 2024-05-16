@@ -3,9 +3,26 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 const app = express();
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 const cors = require('cors');
+
+const http = require('http');
+const socketIo = require('socket.io');
 app.use(cors());
+const server = http.createServer(app);
+const io = socketIo(server, {
+  cors: {
+      origin: "http://localhost:5173",
+      methods: ["GET", "POST"]
+  }
+});
+
+
+
+
+
+
+
 
 // Connect to MongoDB
 mongoose.connect('mongodb://localhost:27017/projectdb', { useNewUrlParser: true, useUnifiedTopology: true });
@@ -99,6 +116,76 @@ app.post('/change-password', async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+
+
+
+
+const complaintSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  location: { type: [Number], required: true }, // Assuming location is an array of numbers [latitude, longitude]
+  complaint: { type: String, required: true },
+});
+
+// Create a new model for complaints
+const Complaint = mongoose.model('Complaint', complaintSchema);
+
+// Add a new route to handle POST requests for complaints
+app.post('/complaints', async (req, res) => {
+  const { name, location, complaint } = req.body;
+
+  try {
+    // Create a new complaint document
+    const newComplaint = new Complaint({ name, location, complaint });
+    // Save the complaint to the database
+    await newComplaint.save();
+    res.status(201).send(newComplaint);
+  } catch (error) {
+    console.error('Error saving complaint:', error);
+    res.status(500).send('Error saving complaint');
+  }
+});
+
+// Add a new route to handle GET requests for complaints by name
+app.get('/complaints/:name', async (req, res) => {
+  const { name } = req.params;
+
+  try {
+    // Find all complaints with the given name
+    const complaints = await Complaint.find({ name });
+    res.status(200).send(complaints);
+  } catch (error) {
+    console.error('Error fetching complaints:', error);
+    res.status(500).send('Error fetching complaints');
+  }
+});
+app.delete('/complaints/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+      // Find the complaint by ID and remove it from the database
+      const deletedComplaint = await Complaint.findOneAndDelete({ _id: id });
+      if (!deletedComplaint) {
+          return res.status(404).send('Complaint not found');
+      }
+      res.status(200).send('Complaint revoked successfully');
+  } catch (error) {
+      console.error('Error revoking complaint:', error);
+      res.status(500).send('Error revoking complaint');
+  }
+});
+
+
+
+
+// Websocket Connections
+
+
+
+
+
+
+
+
+server.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
 });

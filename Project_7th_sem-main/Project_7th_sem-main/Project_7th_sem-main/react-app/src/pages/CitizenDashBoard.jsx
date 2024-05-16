@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 
+
 import LogoutButton from "./LogoutButton";
 import LocationPicker from "./LocationPicker";
 import MyMap from "./MyMap";
@@ -152,14 +153,29 @@ function ComplainsComp() {
     useEffect(() => {
       console.log(selectedLocation);
     });
-    const handleSubmit = (e) => {
+    let phone = JSON.parse(sessionStorage.user).phone;
+    const handleSubmit = async (e) => {
       e.preventDefault();
       console.log("submitted", {
         name: e.target.name.value,
         location: selectedLocation,
         complaint: e.target.complaint.value,
       });
-      // Add logic to send the complaint data to your server
+      
+      // Logic to send the complaint data to your server
+      try {
+        const response = await axios.post('http://localhost:3001/complaints', {
+          name: e.target.name.value,
+          location: selectedLocation,
+          complaint: e.target.complaint.value,
+        });
+        e.target.reset();
+        console.log('Complaint submitted successfully:', response.data);
+    } catch (error) {
+        console.error('Error submitting complaint:', error);
+    }
+         
+
     };
 
     return (
@@ -173,14 +189,16 @@ function ComplainsComp() {
               htmlFor="name"
               className="block text-sm font-medium text-gray-700"
             >
-              Your Name:
+              Your Phone:
             </label>
             <input
               type="text"
               id="name"
               name="name"
+              value={phone}
+              readOnly
               required
-              className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:border-blue-500 focus:ring focus:ring-blue-200"
+              className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:border-blue-500 focus:ring focus:ring-blue-200 bg-gray-200"
             />
 
             <div className="p-2 m-7">
@@ -297,27 +315,61 @@ function ComplainsComp() {
   );
 }
 function HistoryComp() {
+  const [complaints, setComplaints] = useState([]);
+
+  useEffect(() => {
+      // Fetch complaints from the backend
+      const fetchComplaints = async () => {
+          try {
+            let phone= JSON.parse(sessionStorage.user).phone;
+              const response = await axios.get(`http://localhost:3001/complaints/${phone}`);
+              setComplaints(response.data);
+          } catch (error) {
+              console.error('Error fetching complaints:', error);
+          }
+      };
+
+      
+
+      fetchComplaints();
+  }, []);
+  const handleRevoke = async (complaintId) => {
+  console.log("revoking id...", complaintId);
+  let phone= JSON.parse(sessionStorage.user).phone;
+    try {
+        await axios.delete(`http://localhost:3001/complaints/${complaintId}`);
+        // Refresh the complaints list or update state as needed
+        const response = await axios.get(`http://localhost:3001/complaints/${phone}`);
+        setComplaints(response.data);
+       
+    } catch (error) {
+        console.error('Error revoking complaint:', error);
+    }
+};
   return (
-    <>
-      <main>
-        <div className="dashboard-item">
-          <h2>Complain History</h2>
-          <ul className="complaints-list">
-            <li className="complaint">
-              <strong>Issue:</strong> Van is not on time
-              <br />
-              <strong>Status:</strong> In Progress
-            </li>
-            <li className="complaint">
-              <strong>Issue:</strong> Van didn't come today
-              <br />
-              <strong>Status:</strong> Open
-            </li>
-            {/* Add more complaints as needed */}
-          </ul>
-        </div>
-      </main>
-    </>
+      <>
+          <main>
+              <div className="dashboard-item">
+                  <h2>Complain History:</h2>
+                  <ul className="complaints-list">
+                      {complaints.map((complaint, index) => (
+                          <li key={index} className="complaint">
+                              <strong>Issue:</strong> {complaint.complaint}
+                              <br />
+                              <strong>Co-ordinates:</strong> {complaint.location.join(', ')}
+                              <br />
+                              <button
+            className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded"
+            onClick={() => handleRevoke(complaint._id)} // Assuming _id is the complaint ID
+        >
+            Revoke
+        </button>
+                          </li>
+                      ))}
+                  </ul>
+              </div>
+          </main>
+      </>
   );
 }
 export default CitizenDashBoard;
