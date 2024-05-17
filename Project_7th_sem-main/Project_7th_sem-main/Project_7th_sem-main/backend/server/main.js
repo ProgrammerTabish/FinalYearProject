@@ -144,6 +144,21 @@ app.post('/complaints', async (req, res) => {
     res.status(500).send('Error saving complaint');
   }
 });
+// Add a new route to get all complains
+
+app.get('/complaints/all', async (req, res) => {
+  const { name } = req.params;
+
+  try {
+    // Find all complaints with the given name
+    const complaints = await Complaint.find();
+    res.status(200).send(complaints);
+  } catch (error) {
+    console.error('Error fetching complaints:', error);
+    res.status(500).send('Error fetching complaints');
+  }
+});
+
 
 // Add a new route to handle GET requests for complaints by name
 app.get('/complaints/:name', async (req, res) => {

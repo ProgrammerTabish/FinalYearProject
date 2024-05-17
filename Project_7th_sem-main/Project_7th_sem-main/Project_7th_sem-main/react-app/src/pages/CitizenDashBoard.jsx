@@ -236,41 +236,7 @@ function ComplainsComp() {
   }
 
   function TrackVan() {
-    useEffect(() => {
-      // Function to initialize the map
-      const initMap = () => {
-        // Set the default location to a specific latitude and longitude
-        const defaultLocation = { lat: 40.7128, lng: -74.006 };
-
-        // Create a map centered at the default location
-        const map = new window.google.maps.Map(document.getElementById("map"), {
-          zoom: 12,
-          center: defaultLocation,
-        });
-
-        // Add a marker at the default location
-        new window.google.maps.Marker({
-          position: defaultLocation,
-          map: map,
-          title: "Van Location",
-        });
-      };
-
-      // Load the Google Maps API script
-      const script = document.createElement("script");
-      script.src = `https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap`;
-      script.defer = true;
-      script.async = true;
-
-      document.head.appendChild(script);
-
-      return () => {
-        // Clean up the script tag on component unmount
-        document.head.removeChild(script);
-      };
-    }, []); // Empty dependency array ensures the effect runs only once
-
-    return (
+        return (
       <>
         <div className="min-h-screen bg-gray-100">
           <div className="flex">
@@ -338,7 +304,7 @@ function HistoryComp() {
   let phone= JSON.parse(sessionStorage.user).phone;
     try {
         await axios.delete(`http://localhost:3001/complaints/${complaintId}`);
-        // Refresh the complaints list or update state as needed
+        // Refresh the complaints list and update state as needed
         const response = await axios.get(`http://localhost:3001/complaints/${phone}`);
         setComplaints(response.data);
        
