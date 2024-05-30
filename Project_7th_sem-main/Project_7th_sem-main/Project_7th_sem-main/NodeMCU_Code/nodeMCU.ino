@@ -1,75 +1,45 @@
 #include <ESP8266WiFi.h>
-#include <ESP8266HTTPClient.h>
+#include <FirebaseESP8266.h>
 #include <TinyGPS++.h>
-#include <SoftwareSerial.h>
 
-#define RX_PIN D5
-#define TX_PIN D6
+const char* ssid = "your_SSID";
+const char* password = "your_PASSWORD";
 
-SoftwareSerial gpsSerial(RX_PIN, TX_PIN);
+const char* firebaseHost = "your_firebase_database_url";
+const char* firebaseAuth = "your_firebase_database_secret";
+
+FirebaseData firebaseData;
 TinyGPSPlus gps;
-const char *ssid = "YOUR_WIFI_SSID";
-const char *password = "YOUR_WIFI_PASSWORD";
-const char *apiEndpoint = "YOUR_API_ENDPOINT";
-const char *apiKey = "YOUR_API_KEY";
-const int updateInterval = 60000; // Update every 60 seconds
 
-void setup()
-{
-    Serial.begin(115200);
-    gpsSerial.begin(9600);
-    connectToWiFi();
+void setup() {
+  Serial.begin(9600);
+  Serial1.begin(9600);  // GPS module
+  
+  WiFi.begin(ssid, password);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println("WiFi connected");
+
+  Firebase.begin(firebaseHost, firebaseAuth);
+  Firebase.reconnectWiFi(true);
 }
 
-void loop()
-{
-    if (millis() > updateInterval)
-    {
-        if (gps.location.isValid())
-        {
-            sendLocationData(gps.location.lat(), gps.location.lng());
-        }
-        millis() = 0;
-    }
-    while (gpsSerial.available() > 0)
-    {
-        if (gps.encode(gpsSerial.read()))
-        {
-            break;
-        }
-    }
-}
+void loop() {
+  while (Serial1.available() > 0) {
+    gps.encode(Serial1.read());
+    if (gps.location.isUpdated()) {
+      String lat = String(gps.location.lat(), 6);
+      String lng = String(gps.location.lng(), 6);
 
-void connectToWiFi()
-{
-    WiFi.begin(ssid, password);
-    while (WiFi.status() != WL_CONNECTED)
-    {
-        delay(1000);
-        Serial.println("Connecting to WiFi...");
+      if (Firebase.setString(firebaseData, "/gps/lat", lat) && 
+          Firebase.setString(firebaseData, "/gps/lng", lng)) {
+        Serial.println("Data sent to Firebase");
+      } else {
+        Serial.println("Firebase setString failed");
+        Serial.println(firebaseData.errorReason());
+      }
     }
-    Serial.println("Connected to WiFi");
-}
-
-void sendLocationData(float latitude, float longitude)
-{
-    HTTPClient http;
-    String url = String(apiEndpoint) + "?key=" + String(apiKey) +
-                 "&lat=" + String(latitude, 6) + "&lng=" + String(longitude, 6);
-
-    http.begin(url);
-
-    int httpResponseCode = http.GET();
-    if (httpResponseCode > 0)
-    {
-        Serial.print("HTTP Response code: ");
-        Serial.println(httpResponseCode);
-    }
-    else
-    {
-        Serial.print("HTTP Error code: ");
-        Serial.println(httpResponseCode);
-    }
-
-    http.end();
+  }
 }

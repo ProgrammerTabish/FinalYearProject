@@ -244,15 +244,7 @@ function ComplainsComp() {
             <div className="w-70vw h-screen z-4"></div>
             <LocationPicker />
             {/* Van Details Section (30% of the screen) */}
-            <div className="w-30vw p-4 bg-white rounded-xl">
-              <h2 className="text-xl font-semibold mb-4">Van Details</h2>
-              {/* Replace with actual van details or coordinates display */}
-              <div>
-                <p>Latitude: 40.7128</p>
-                <p>Longitude: -74.0060</p>
-                <p>Last Update: 2023-11-14 12:30 PM</p>
-              </div>
-            </div>
+            
           </div>
         </div>
       </>
